@@ -1,0 +1,4 @@
+web: env bundle exec rake contentful:scheduler
+monitor: env bundle exec rackup
+resque: env bundle exec rake resque:work
+resque_scheduler: env bundle exec rake resque:scheduler
