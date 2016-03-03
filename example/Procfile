@@ -1,0 +1,3 @@
+entry_scheduler: env bundle exec rake contentful:scheduler
+resque: env bundle exec rake resque:work
+resque_scheduler: env bundle exec rake resque:scheduler
