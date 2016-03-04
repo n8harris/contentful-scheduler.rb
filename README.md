@@ -9,8 +9,11 @@ and publish it anywhere via powerful API. Contentful offers tools for managing e
 teams and enabling cooperation between organizations.
 
 ## What does `contentful-scheduler` do?
-The aim of `contentful-scheduler` is to have developers setting up their Contentful
-entries for scheduled publishing.
+The aim of `contentful-scheduler` is to provide a solution for scheduled publishing of content hosted on Contentful.
+
+## How does it work
+`contentful-scheduler` provides a web endpoint to receives webhook calls from Contentful, every time the endpoint recieves a call it looks for the value of the field defined in the configuration, if the value is a time in the future it will schedule the entry for publishing at the specified time.
+A background worker based on the popular `rescue` gem will then proceed to actually make the publish call against the Content Management API at the due time.
 
 ## Requirements
 
@@ -113,6 +116,10 @@ $ foreman start
 ```
 
 You can get the templates for all these files in the [`example/`](./example) directory
+
+* Configure the webhook in Contentful:
+
+Under the space settings menu choose webhook and add a new webhook pointing to... <TODO> 
 
 ## Contributing
 
