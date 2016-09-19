@@ -15,7 +15,7 @@ module Contentful
       def update_or_create(webhook)
         return unless publishable?(webhook)
         remove(webhook) if in_queue?(webhook)
-        return if already_published?(webhook)
+        #return if already_published?(webhook)
 
         success = Resque.enqueue_at(
           publish_date(webhook).to_time.utc,
