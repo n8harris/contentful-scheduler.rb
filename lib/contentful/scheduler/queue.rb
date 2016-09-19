@@ -13,18 +13,19 @@ module Contentful
       end
 
       def update_or_create(webhook)
-        puts "publish_date(webhook).to_time.utc: #{publish_date(webhook).to_time.utc}"
+        logger.info "publish_date(webhook).to_time.utc: #{publish_date(webhook).to_time.utc}"
         #return unless publishable?(webhook)
         #remove(webhook) if in_queue?(webhook)
         #return if already_published?(webhook)
 
-        success = Resque.enqueue_at(
-          publish_date(webhook).to_time.utc,
-          ::Contentful::Scheduler::Tasks::Publish,
-          webhook.space_id,
-          webhook.id,
-          ::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]
-        )
+        success = "success"
+        #Resque.enqueue_at(
+          #publish_date(webhook).to_time.utc,
+          #::Contentful::Scheduler::Tasks::Publish,
+          #webhook.space_id,
+          #webhook.id,
+          #::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]
+        #)
 
         puts "success: #{success}"
 
