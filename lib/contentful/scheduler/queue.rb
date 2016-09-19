@@ -51,9 +51,11 @@ module Contentful
       end
 
       def publishable?(webhook)
+        puts "spaces.key?(webhook.space_id): #{spaces.key?(webhook.space_id)}"
         return false unless spaces.key?(webhook.space_id)
 
         if webhook_publish_field?(webhook)
+          puts "!webhook_publish_field(webhook).nil?: #{!webhook_publish_field(webhook).nil?}"
           return !webhook_publish_field(webhook).nil?
         end
 
@@ -88,6 +90,8 @@ module Contentful
       end
 
       def webhook_publish_field?(webhook)
+        puts "spaces.fetch(webhook.space_id, {})[:publish_field]: #{spaces.fetch(webhook.space_id, {})[:publish_field]}"
+        puts "webhook.fields: #{webhook.fields}"
         webhook.fields.key?(spaces.fetch(webhook.space_id, {})[:publish_field])
       end
 
