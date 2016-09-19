@@ -18,6 +18,8 @@ module Contentful
         remove(webhook) if in_queue?(webhook)
         #return if already_published?(webhook)
 
+        puts "publish_date(webhook).to_time.utc: #{publish_date(webhook).to_time.utc}"
+        puts "::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]: #{::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]}"
         success = Resque.enqueue_at(
           publish_date(webhook).to_time.utc,
           ::Contentful::Scheduler::Tasks::Publish,
@@ -27,7 +29,6 @@ module Contentful
         )
 
         puts "success: #{success}"
-        puts "publish_date(webhook).to_time.utc: #{publish_date(webhook).to_time.utc}"
 
         if success
           logger.info "Webhook {id: #{webhook.id}, space_id: #{webhook.space_id}} successfully added to queue"
