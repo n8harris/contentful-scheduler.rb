@@ -14,7 +14,7 @@ module Contentful
 
       def update_or_create(webhook)
         puts "made it"
-        puts "publish_date(webhook): #{publish_date(webhook)}"
+        puts "publish_date(webhook).to_time.utc: #{publish_date(webhook).to_time.utc}"
         #return unless publishable?(webhook)
         #remove(webhook) if in_queue?(webhook)
         #return if already_published?(webhook)
@@ -87,7 +87,7 @@ module Contentful
       def publish_date(webhook)
         date_field = webhook_publish_field(webhook)
         date_field = date_field[date_field.keys[0]] if date_field.is_a? Hash
-        #DateTime.strptime(date_field)
+        DateTime.strptime(date_field)
       end
 
       def spaces

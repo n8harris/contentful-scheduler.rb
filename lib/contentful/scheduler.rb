@@ -1,3 +1,4 @@
+require 'date'
 require 'resque'
 require 'redis'
 require 'logger'
