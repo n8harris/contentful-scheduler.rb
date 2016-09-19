@@ -87,7 +87,7 @@ module Contentful
       def publish_date(webhook)
         date_field = webhook_publish_field(webhook)
         date_field = date_field[date_field.keys[0]] if date_field.is_a? Hash
-        DateTime.strptime(date_field)
+        #DateTime.strptime(date_field)
       end
 
       def spaces
