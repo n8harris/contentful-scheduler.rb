@@ -13,22 +13,17 @@ module Contentful
       end
 
       def update_or_create(webhook)
-        puts "made it"
-        puts "publish_date(webhook).to_time.utc: #{publish_date(webhook).to_time.utc}"
-        #return unless publishable?(webhook)
-        #remove(webhook) if in_queue?(webhook)
+        return unless publishable?(webhook)
+        remove(webhook) if in_queue?(webhook)
         #return if already_published?(webhook)
 
-        success = "success"
-        #Resque.enqueue_at(
-          #publish_date(webhook).to_time.utc,
-          #::Contentful::Scheduler::Tasks::Publish,
-          #webhook.space_id,
-          #webhook.id,
-          #::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]
-        #)
-
-        puts "success: #{success}"
+        success = Resque.enqueue_at(
+          publish_date(webhook).to_time.utc,
+          ::Contentful::Scheduler::Tasks::Publish,
+          webhook.space_id,
+          webhook.id,
+          ::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]
+        )
 
         if success
           logger.info "Webhook {id: #{webhook.id}, space_id: #{webhook.space_id}} successfully added to queue"
@@ -56,11 +51,9 @@ module Contentful
       end
 
       def publishable?(webhook)
-        puts "spaces.key?(webhook.space_id): #{spaces.key?(webhook.space_id)}"
         return false unless spaces.key?(webhook.space_id)
 
         if webhook_publish_field?(webhook)
-          puts "!webhook_publish_field(webhook).nil?: #{!webhook_publish_field(webhook).nil?}"
           return !webhook_publish_field(webhook).nil?
         end
 
@@ -95,8 +88,6 @@ module Contentful
       end
 
       def webhook_publish_field?(webhook)
-        puts "spaces.fetch(webhook.space_id, {})[:publish_field]: #{spaces.fetch(webhook.space_id, {})[:publish_field]}"
-        puts "webhook.fields: #{webhook.fields}"
         webhook.fields.key?(spaces.fetch(webhook.space_id, {})[:publish_field])
       end
 
