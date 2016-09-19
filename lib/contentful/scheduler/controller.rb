@@ -9,7 +9,7 @@ module Contentful
 
         puts "::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]: #{::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]}"
         logger.info "Queueing - Space: #{webhook.space_id} - Entry: #{webhook.id}"
-
+        puts Queue.instance(logger)
         Queue.instance(logger).update_or_create(webhook)
       end
       alias_method :save, :create
