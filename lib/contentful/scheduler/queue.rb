@@ -13,6 +13,7 @@ module Contentful
       end
 
       def update_or_create(webhook)
+        puts "publish_date(webhook).to_time.utc: #{publish_date(webhook).to_time.utc}"
         #return unless publishable?(webhook)
         #remove(webhook) if in_queue?(webhook)
         #return if already_published?(webhook)
