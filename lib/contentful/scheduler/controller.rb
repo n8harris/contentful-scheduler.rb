@@ -7,6 +7,7 @@ module Contentful
       def create
         return unless webhook.entry?
 
+        ::Contentful::Scheduler.config[:spaces][webhook.space_id][:management_token]
         logger.info "Queueing - Space: #{webhook.space_id} - Entry: #{webhook.id}"
 
         Queue.instance(logger).update_or_create(webhook)
